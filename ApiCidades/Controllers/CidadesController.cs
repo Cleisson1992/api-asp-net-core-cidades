@@ -1,12 +1,13 @@
-﻿using ApiCidades.Data;
-using ApiCidades.Data.Dtos;
-using ApiCidades.Filtro;
-using ApiCidades.Models;
+﻿using ApiCidades.Data.Dtos;
+using ApiCidades.Data.Dtos.Request;
+using ApiCidades.Domain.Entities;
+using ApiCidades.Domain.Service;
+using ApiCidades.Domain.UserCase.UserCaseCidade.Cadastro;
+using ApiCidades.Domain.UserCase.UserCaseCidade.Consulta;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 
 namespace ApiCidades.Controllers
 {
@@ -14,19 +15,28 @@ namespace ApiCidades.Controllers
     [Route("[controller]")]
     public class CidadesController : ControllerBase
     {
+
         #region Utilização do contexto(Bd) e mapeamento da Api
 
-        private ApiCidadeContext _context;
+        private readonly IRepository _repo;
+        private readonly IConsultaDeCidade _consultaDeCidade;
+        private readonly ICadastroDeCidade _cadastroDeCidade;
         private readonly ILogger<CidadesController> _logger;
         private IMapper _mapper;
 
-        public CidadesController(ApiCidadeContext context, ILogger<CidadesController> logger, IMapper mapper)
+        public CidadesController(IRepository repo, IConsultaDeCidade consultaDeCidade, ICadastroDeCidade cadastroDeCidade, ILogger<CidadesController> logger, IMapper mapper)
         {
+            _repo = repo ??
+                throw new ArgumentNullException(nameof(repo));
+
+            _consultaDeCidade = consultaDeCidade ??
+                throw new ArgumentNullException(nameof(consultaDeCidade));
+
+            _cadastroDeCidade = cadastroDeCidade ??
+                throw new ArgumentNullException(nameof(cadastroDeCidade));
+
             _logger = logger ??
                   throw new ArgumentNullException(nameof(logger));
-
-            _context = context ??
-                throw new ArgumentNullException(nameof(context));
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
@@ -42,8 +52,13 @@ namespace ApiCidades.Controllers
         {
             Cidade cidade = _mapper.Map<Cidade>(cidadeDto);
 
-            _context.Cidades.Add(cidade);
-            _context.SaveChanges();
+            if (cidade is null)
+            {
+                return NotFound();
+            }
+
+            _cadastroDeCidade.CadastrarCidade(cidade);
+
             return CreatedAtAction(nameof(ConsultarCidadePorId), new { Id = cidade.Id }, cidade);
         }
 
@@ -60,14 +75,18 @@ namespace ApiCidades.Controllers
         [HttpGet("{id}")]
         public IActionResult ConsultarCidadePorId(int id)
         {
-            Cidade cidade = _context.Cidades.FirstOrDefault(cidade => cidade.Id == id);
 
-            if (cidade != null)
+            var cidadePorId = _consultaDeCidade.ConsultarCidadePorId(id);
+
+            if (cidadePorId is null)
             {
-                CidadeReadDto clienteDto = _mapper.Map<CidadeReadDto>(cidade);
+                return NotFound();
             }
 
-            return NotFound();
+            var cidadeDto = _mapper.Map<CidadeReadDto>(cidadePorId);
+
+            return Ok(cidadeDto);
+
         }
 
 
@@ -77,30 +96,18 @@ namespace ApiCidades.Controllers
         /// <param name="cidadesFiltro"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult ConsultarCidadePeloNomeOuEstado([FromQuery] CidadesFiltro cidadesFiltro)
+        public IActionResult ConsultarCidadePeloNomeOuEstado([FromQuery] CidadesRequest cidadesRequest)
         {
-            Cidade cidadePeloNome = _context.Cidades.FirstOrDefault(cidade => cidade.Nome == cidadesFiltro.Nome);
-            Cidade cidadeEstado = _context.Cidades.FirstOrDefault(cidade => cidade.Estado == cidadesFiltro.Estado);
+            var cidadePorNomeOuEstado = _consultaDeCidade.ConsultarCidadePorNomeOuEstado(cidadesRequest.Nome, cidadesRequest.Estado);
 
-            if (cidadePeloNome != null)
+            var cidadeDto = _mapper.Map<CidadeReadDto>(cidadePorNomeOuEstado);
+
+            if (cidadeDto is null)
             {
-                CidadeReadDto clienteDto = _mapper.Map<CidadeReadDto>(cidadePeloNome);
-
-                return Ok(clienteDto);
+                return NoContent();
             }
 
-            if (cidadeEstado != null)
-            {
-                CidadeReadDto clienteDto = _mapper.Map<CidadeReadDto>(cidadeEstado);
-                return Ok(clienteDto);
-            }
-
-            else if (_context.Cidades != null)
-            {
-                return Ok(_context.Cidades);
-            }
-                
-            return NotFound();
+            return Ok(cidadeDto);
         }
 
         #endregion

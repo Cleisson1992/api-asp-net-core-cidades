@@ -1,0 +1,12 @@
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.AssemblyInfoInputs.cache
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.AssemblyInfo.cs
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.csproj.CoreCompileInputs.cache
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\bin\Debug\netcoreapp3.1\ApiCidades.Infra.deps.json
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\bin\Debug\netcoreapp3.1\ApiCidades.Infra.dll
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\bin\Debug\netcoreapp3.1\ApiCidades.Infra.pdb
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\bin\Debug\netcoreapp3.1\ApiCidades.Domain.dll
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\bin\Debug\netcoreapp3.1\ApiCidades.Domain.pdb
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.csprojAssemblyReference.cache
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.csproj.CopyComplete
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.dll
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Infra\obj\Debug\netcoreapp3.1\ApiCidades.Infra.pdb

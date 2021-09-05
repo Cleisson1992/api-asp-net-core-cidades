@@ -1,10 +1,16 @@
 ﻿using ApiCidades.Data;
 using ApiCidades.Data.Dtos;
-using ApiCidades.Models;
+using ApiCidades.Data.Dtos.Request;
+using ApiCidades.Domain.Entities;
+using ApiCidades.Domain.Service;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Altera;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Cadastro;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Consulta;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Remove;
 using AutoMapper;
-using Cidades.API.Filtro;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace ApiCidades.Controllers
 {
@@ -14,13 +20,37 @@ namespace ApiCidades.Controllers
     {
         #region Utilização do contexto(Bd) e mapeamento da Api
 
-        private ApiCidadeContext _context;
+        private readonly IRepository _repo;
+        private readonly ICadastroDeCliente _cadastroDeCliente;
+        private readonly IConsultaDeCliente _consultaDeCliente;
+        private readonly IAlteraCliente _alteraCliente;
+        private readonly IRemoveCliente _removeCliente;
+        private readonly ILogger<ClientesController> _logger;
         private IMapper _mapper;
 
-        public ClientesController(ApiCidadeContext context, IMapper mapper)
+        public ClientesController(IRepository repo, ICadastroDeCliente cadastroDeCliente, IConsultaDeCliente consultaDeCliente, IAlteraCliente alteraCliente, IRemoveCliente removeCliente, ILogger<ClientesController> logger, IMapper mapper)
         {
-            _context = context;
-            _mapper = mapper;
+
+            _repo = repo ??
+                throw new ArgumentNullException(nameof(repo));
+
+            _cadastroDeCliente = cadastroDeCliente??
+                throw new ArgumentNullException(nameof(cadastroDeCliente));
+
+            _consultaDeCliente = consultaDeCliente??
+                throw new ArgumentNullException(nameof(consultaDeCliente));
+
+            _alteraCliente = alteraCliente??
+                throw new ArgumentNullException(nameof(alteraCliente));
+
+            _removeCliente = removeCliente??
+                throw new ArgumentNullException(nameof(removeCliente));
+
+            _logger = logger ??
+                throw new ArgumentNullException(nameof(logger));
+
+            _mapper = mapper ??
+                throw new ArgumentNullException(nameof(mapper));
         }
 
         #endregion
@@ -33,8 +63,13 @@ namespace ApiCidades.Controllers
         {
             Cliente cliente = _mapper.Map<Cliente>(clienteDto);
 
-            _context.Clientes.Add(cliente);
-            _context.SaveChanges();
+            if (cliente is null)
+            {
+                return NotFound();
+            }
+
+            _cadastroDeCliente.CadastrarCliente(cliente);
+    
             return CreatedAtAction(nameof(ConsultarClientePorId), new { Id = cliente.Id }, cliente);
         }
 
@@ -50,20 +85,20 @@ namespace ApiCidades.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(statusCode: 200, Type = typeof(ClienteReadDto))]
-        [ProducesResponseType(statusCode: 500, Type = typeof(ErroResponse))]
+        //[ProducesResponseType(statusCode: 500, Type = typeof(ErroResponse))]
         [ProducesResponseType(statusCode: 404)]
         public IActionResult ConsultarClientePorId(int id)
         {
-            Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
+            var cliente = _consultaDeCliente.ConsultarClientePorId(id);
 
-            if (cliente != null)
+            if(cliente is null)
             {
-                ClienteReadDto clienteDto = _mapper.Map<ClienteReadDto>(cliente);
-
-                return Ok(clienteDto);
+                return NotFound();
             }
 
-            return NotFound();
+            var clienteDto = _mapper.Map<ClienteReadDto>(cliente);
+
+            return Ok(clienteDto);
         }
 
         /// <summary>
@@ -72,23 +107,23 @@ namespace ApiCidades.Controllers
         /// <param name="clientesFiltro"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult ConsultarClientePorNome([FromQuery] ClientesFiltro clientesFiltro)
+        public IActionResult ConsultarClientePorNome([FromQuery] ClientesRequest clientesRequest)
         {
-            Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.NomeCompleto == clientesFiltro.NomeCompleto);
+            var clientePorNome = _consultaDeCliente.ConsultarClientePorNomeCompleto(clientesRequest.NomeCompleto);
 
-            if (cliente != null)
+            if (clientePorNome is null)
             {
-                ClienteReadDto clienteDto = _mapper.Map<ClienteReadDto>(cliente);
-
-                return Ok(clienteDto);
+                return NotFound();
             }
 
-            if (_context.Clientes != null)
+            var clienteDto = _mapper.Map<ClienteReadDto>(clientePorNome);
+
+            if (clienteDto is null)
             {
-                return Ok(_context.Clientes);
+                return NoContent();
             }
 
-            return NotFound();
+            return Ok(clienteDto);
         }
 
 
@@ -100,15 +135,16 @@ namespace ApiCidades.Controllers
         [HttpPut("{id}")]
         public IActionResult AtualizarCliente(int id, [FromBody] ClienteUpdateDto clienteDto)
         {
-            Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
 
-            if (cliente == null)
+            var cliente = _consultaDeCliente.ConsultarClientePorId(id);
+
+            if (cliente is null)
             {
                 return NotFound();
             }
 
-            _mapper.Map(clienteDto, cliente);
-            _context.SaveChanges();
+            _alteraCliente.AlterarCliente(_mapper.Map(clienteDto, cliente));
+
             return NoContent();
         }
 
@@ -120,15 +156,15 @@ namespace ApiCidades.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeletaCliente(int id)
         {
-            Cliente cliente = _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
+            var cliente = _consultaDeCliente.ConsultarClientePorId(id);
 
-            if (cliente == null)
+            if (cliente is null)
             {
                 return NotFound();
             }
 
-            _context.Remove(cliente);
-            _context.SaveChanges();
+            _removeCliente.RemoverCliente(cliente);
+
             return NoContent();
         }
 

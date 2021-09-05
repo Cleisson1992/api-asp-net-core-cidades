@@ -1,8 +1,14 @@
-using ApiCidades.Data;
-using ApiCidades.Filtro;
+using ApiCidades.Domain.Service;
+using ApiCidades.Domain.UserCase.UserCaseCidade.Cadastro;
+using ApiCidades.Domain.UserCase.UserCaseCidade.Consulta;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Altera;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Cadastro;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Consulta;
+using ApiCidades.Domain.UserCase.UserCaseCliente.Remove;
+using ApiCidades.Infra.DataAccess;
+using ApiCidades.Infra.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +30,20 @@ namespace ApiCidades
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApiCidadeContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("CidadesConnection")));
+            services.AddDbContext<ApiCidadesContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("CidadesConnection")));
+
+            services.AddScoped<IRepository, Repository>();
+
+            services.AddScoped<ICadastroDeCidade, CadastroDeCidade>();
+            services.AddScoped<IConsultaDeCidade, ConsultaDeCidade>();
+
+            services.AddScoped<ICadastroDeCliente, CadastroDeCliente>();
+            services.AddScoped<IConsultaDeCliente, ConsultaDeCliente>();
+            services.AddScoped<IAlteraCliente, AlteraCliente>();
+            services.AddScoped<IRemoveCliente, RemoveCliente>();
+
+            services.AddDbContext<ApiCidadesContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("CidadesConnection")));
+
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -34,12 +53,12 @@ namespace ApiCidades
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Documentação da Cidades Compasso API",
+                    Title = "Documentação da Cidades API",
                     Description = "API Asp NET Core 3.1 Entity Framework LocalDB",
                     Contact = new OpenApiContact
                     {
                         Name = "Cleisson Vasconcelos dos Santos",
-                        Email = "cleisson.santos@compasso.com.br"
+                        Email = "cleissonvasconcelos1992@hotmail.com"
                     }
                 });
             });

@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "ApiCidades/1.0.0": {
         "dependencies": {
+          "ApiCidades.Infra": "1.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.1",
           "Microsoft.EntityFrameworkCore": "5.0.9",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.9",
@@ -815,6 +816,27 @@
       "System.Windows.Extensions/4.7.0": {
         "dependencies": {
           "System.Drawing.Common": "4.7.0"
+        }
+      },
+      "ApiCidades.Domain/1.0.0": {
+        "runtime": {
+          "ApiCidades.Domain.dll": {}
+        },
+        "compile": {
+          "ApiCidades.Domain.dll": {}
+        }
+      },
+      "ApiCidades.Infra/1.0.0": {
+        "dependencies": {
+          "ApiCidades.Domain": "1.0.0",
+          "AutoMapper": "10.1.1",
+          "Microsoft.EntityFrameworkCore": "5.0.9"
+        },
+        "runtime": {
+          "ApiCidades.Infra.dll": {}
+        },
+        "compile": {
+          "ApiCidades.Infra.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
@@ -2787,6 +2809,16 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
+    },
+    "ApiCidades.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ApiCidades.Infra/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
       "type": "referenceassembly",

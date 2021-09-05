@@ -627,6 +627,31 @@
             "rid": "win"
           }
         }
+      },
+      "ApiCidades.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/ApiCidades.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ApiCidades.Domain.dll": {}
+        }
+      },
+      "ApiCidades.Infra/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "ApiCidades.Domain": "1.0.0",
+          "AutoMapper": "10.1.1",
+          "Microsoft.EntityFrameworkCore": "5.0.9"
+        },
+        "compile": {
+          "bin/placeholder/ApiCidades.Infra.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ApiCidades.Infra.dll": {}
+        }
       }
     }
   },
@@ -1909,10 +1934,21 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "ApiCidades.Domain/1.0.0": {
+      "type": "project",
+      "path": "../ApiCidades.Domain/ApiCidades.Domain.csproj",
+      "msbuildProject": "../ApiCidades.Domain/ApiCidades.Domain.csproj"
+    },
+    "ApiCidades.Infra/1.0.0": {
+      "type": "project",
+      "path": "../ApiCidades.Infra/ApiCidades.Infra.csproj",
+      "msbuildProject": "../ApiCidades.Infra/ApiCidades.Infra.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "ApiCidades.Infra >= 1.0.0",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.1",
       "Microsoft.EntityFrameworkCore >= 5.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.9",
@@ -1950,7 +1986,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\cleis\\OneDrive\\Área de Trabalho\\ApiCidades\\ApiCidades.Infra\\ApiCidades.Infra.csproj": {
+              "projectPath": "C:\\Users\\cleis\\OneDrive\\Área de Trabalho\\ApiCidades\\ApiCidades.Infra\\ApiCidades.Infra.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

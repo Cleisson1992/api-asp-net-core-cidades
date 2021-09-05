@@ -1,0 +1,9 @@
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\obj\Debug\netcoreapp3.1\ApiCidades.Domain.AssemblyInfoInputs.cache
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\obj\Debug\netcoreapp3.1\ApiCidades.Domain.AssemblyInfo.cs
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\obj\Debug\netcoreapp3.1\ApiCidades.Domain.csproj.CoreCompileInputs.cache
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\bin\Debug\netcoreapp3.1\ApiCidades.Domain.deps.json
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\bin\Debug\netcoreapp3.1\ApiCidades.Domain.dll
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\bin\Debug\netcoreapp3.1\ApiCidades.Domain.pdb
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\obj\Debug\netcoreapp3.1\ApiCidades.Domain.csprojAssemblyReference.cache
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\obj\Debug\netcoreapp3.1\ApiCidades.Domain.dll
+C:\Users\cleis\OneDrive\Área de Trabalho\ApiCidades\ApiCidades.Domain\obj\Debug\netcoreapp3.1\ApiCidades.Domain.pdb
