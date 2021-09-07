@@ -1,9 +1,5 @@
 ﻿using ApiCidades.Domain.Entities;
 using ApiCidades.Domain.Service;
-using ApiCidades.Domain.UserCase.UserCaseCliente.Altera;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ApiCidades.Domain.UserCase.UserCaseCliente.Altera
 {
